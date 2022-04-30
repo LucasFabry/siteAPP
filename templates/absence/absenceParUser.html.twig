@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+    {% block title %}Hello UtilisateurController!{% endblock %}
+
+    {% block body %}
+        {% for abs in absencesUtilisateur %}
+            {{abs.idEtu.prenom}} {{abs.date|date('F jS Y \\a\\t g:ia')}}
+            <br>
+        {% endfor %}
+    {% endblock %}
