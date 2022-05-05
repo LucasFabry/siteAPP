@@ -1,6 +1,4 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello AbsenceController!{% endblock %}
+{% extends 'base2.html.twig' %}
 
 {% block body %}
 <style>
@@ -13,7 +11,7 @@
         {% for abs in absences %}
         <div class="card" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title">{{ abs.idEtu.prenom }}</h5>
+                <h5 class="card-title">{{ abs.idUtilisateur.prenom }}</h5>
                 <p class="card-text">{{abs.date|date('F jS Y \\a\\t g:ia')}}</p>
                 <a href="#" class="btn btn-primary">Go somewhere</a>
             </div>

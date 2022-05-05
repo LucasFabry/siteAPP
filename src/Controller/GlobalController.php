@@ -23,4 +23,20 @@ class GlobalController extends AbstractController
             'css' => 'login.css',
         ]);
     }
+
+    #[Route('/edt', name: 'global.edt')]
+    public function getEDT(): Response
+    {
+        return $this->render('global/timetable.html.twig', [
+            'css' => 'css/edt.css',
+        ]);
+    }
+
+    #[Route('/qrcode', name: 'global.qrcode')]
+    public function getQRCode(): Response
+    {
+        return $this->render('global/qrcode.html.twig', [
+            'css' => 'css/qrcode.css',
+        ]);
+    }
 }

@@ -16,7 +16,7 @@ class AbsenceType extends AbstractType
             ->add('date')
             ->add('justification')
             ->add('valide')
-            ->add('idEtu')
+            ->add('idUtilisateur')
             ->add('envoyer', SubmitType::class)
         ;
     }

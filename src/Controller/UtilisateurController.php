@@ -14,13 +14,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UtilisateurController extends AbstractController
 {
-    #[Route('/', name: 'utilisateur.list')]
+    #[Route('/listeUser', name: 'utilisateur.list')]
     public function selectAll(ManagerRegistry $manager): Response
     {
         $repository = $manager->getRepository(Utilisateur::class);
         $utilisateur = $repository->findAll();
         return $this->render('utilisateur/index.html.twig', [
             'utilisateurs' => $utilisateur,
+            'css' => '../css/base2.css',
         ]);
     }
 
@@ -45,7 +46,11 @@ class UtilisateurController extends AbstractController
             'form' => $form->createView()
         ]);
         }
-
-        //Ajouter l'opération d'insertion
     }
+
+    /*#[Route('/', name: 'utilisateur.pagePerso')]
+    public function pagePers(ManagerRegistry $doctrine, Request $request): Response
+    {
+
+    }*/
 }

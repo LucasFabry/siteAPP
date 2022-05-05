@@ -26,6 +26,9 @@ class Absence
     #[ORM\JoinColumn(nullable: false)]
     private $idUtilisateur;
 
+    #[ORM\ManyToOne(targetEntity: Etudiant::class, inversedBy: 'absences')]
+    private $etudiant;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +78,18 @@ class Absence
     public function setIdUtilisateur(?Utilisateur $idUtilisateur): self
     {
         $this->idUtilisateur = $idUtilisateur;
+
+        return $this;
+    }
+
+    public function getEtudiant(): ?Etudiant
+    {
+        return $this->etudiant;
+    }
+
+    public function setEtudiant(?Etudiant $etudiant): self
+    {
+        $this->etudiant = $etudiant;
 
         return $this;
     }

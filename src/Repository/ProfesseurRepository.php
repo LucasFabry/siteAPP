@@ -2,32 +2,32 @@
 
 namespace App\Repository;
 
-use App\Entity\Utilisateur;
+use App\Entity\Professeur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Utilisateur>
+ * @extends ServiceEntityRepository<Professeur>
  *
- * @method Utilisateur|null find($id, $lockMode = null, $lockVersion = null)
- * @method Utilisateur|null findOneBy(array $criteria, array $orderBy = null)
- * @method Utilisateur[]    findAll()
- * @method Utilisateur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Professeur|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Professeur|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Professeur[]    findAll()
+ * @method Professeur[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class UtilisateurRepository extends ServiceEntityRepository
+class ProfesseurRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Utilisateur::class);
+        parent::__construct($registry, Professeur::class);
     }
 
     /**
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function add(Utilisateur $entity, bool $flush = true): void
+    public function add(Professeur $entity, bool $flush = true): void
     {
         $this->_em->persist($entity);
         if ($flush) {
@@ -39,7 +39,7 @@ class UtilisateurRepository extends ServiceEntityRepository
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function remove(Utilisateur $entity, bool $flush = true): void
+    public function remove(Professeur $entity, bool $flush = true): void
     {
         $this->_em->remove($entity);
         if ($flush) {
@@ -48,29 +48,31 @@ class UtilisateurRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Utilisateur[] Returns an array of Utilisateur objects
+    //  * @return Professeur[] Returns an array of Professeur objects
     //  */
-    
+    /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
+            ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    
+    */
 
-    public function findOneBySomeField($value): ?Utilisateur
+    /*
+    public function findOneBySomeField($value): ?Professeur
     {
-        return $this->createQueryBuilder('u')
-            ->andWhere('u.id = :val')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
         ;
     }
+    */
 }

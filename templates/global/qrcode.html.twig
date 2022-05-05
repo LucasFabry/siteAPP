@@ -1,0 +1,31 @@
+{% extends 'base2.html.twig' %}
+
+{% block body %}
+
+    <div>
+        <img src="https://nikolaspizza.com/wp-content/uploads/2021/05/qr-code-img.png" alt="Qr Code Image" />    
+    </div>
+    <button type="button" class="btn btn-info">Générer QR Code</button>
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">Dernier pointage</th>
+        <th scope="col">Cours</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+        <th scope="row">10h13</th>
+        <td>INFO842</td>
+        </tr>
+        <tr>
+        <th scope="row">9h17</th>
+        <td>PACI841</td>
+        </tr>
+        <tr>
+        <th scope="row">8h16</th>
+        <td>EASI842</td>
+        </tr>
+    </tbody>
+    </table>
+{% endblock %}

@@ -29,6 +29,7 @@ class AbsenceController extends AbstractController
         $absences = $repository->findAll();
         return $this->render('absence/index.html.twig', [
             'absences' => $absences,
+            'css' => '../css/base2.css'
         ]);
     }
 
@@ -51,7 +52,8 @@ class AbsenceController extends AbstractController
             return $this->redirectToRoute('absence.list'); 
         }else{
             return $this->render('absence/add-absence.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'css' => '../css/base2.css',
         ]);
         }
 
@@ -82,9 +84,10 @@ class AbsenceController extends AbstractController
         $utilisateur = $repository->find($id);
         if($utilisateur){
             $repositoryAbs = new AbsenceRepository($doctrine);
-            $listeAbs = $repositoryAbs->findByIdEtu($id);
+            $listeAbs = $repositoryAbs->findByIdUtilisateur($id);
             return $this->render('absence/absenceParUser.html.twig', [
                 'absencesUtilisateur' => $listeAbs,
+                'css' => '../css/base2.css'
             ]);
         }
         else{

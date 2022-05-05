@@ -54,7 +54,7 @@ class AbsenceRepository extends ServiceEntityRepository
     public function findByIdUser($value)
     {
         return $this->createQueryBuilder('a')
-             ->andWhere('a.idEtu = :val')
+             ->andWhere('a.idUtilisateur = :val')
              ->setParameter('val', $value)
             //->orderBy('a.id', 'ASC')
             ->getQuery()

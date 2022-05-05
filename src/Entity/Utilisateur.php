@@ -36,6 +36,10 @@ class Utilisateur
     #[ORM\OneToMany(mappedBy: 'idUtilisateur', targetEntity: Absence::class, orphanRemoval: true)]
     private $absences;
 
+    #[ORM\ManyToOne(targetEntity: Classe::class, inversedBy: 'utilisateur')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $classe;
+
     public function __construct()
     {
         $this->absences = new ArrayCollection();
@@ -144,6 +148,23 @@ class Utilisateur
                 $absence->setIdUtilisateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getPrenom() . "  " . $this->getNom();
+    }
+
+    public function getClasse(): ?Classe
+    {
+        return $this->classe;
+    }
+
+    public function setClasse(?Classe $classe): self
+    {
+        $this->classe = $classe;
 
         return $this;
     }
