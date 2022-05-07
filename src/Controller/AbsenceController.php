@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Absence;
+use App\Entity\Etudiant;
 use App\Entity\Utilisateur;
 use App\Form\AbsenceType;
 use App\Repository\AbsenceRepository;
 use App\Repository\UtilisateurRepository;
+use App\Service\MailerService;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
@@ -34,7 +36,7 @@ class AbsenceController extends AbstractController
     }
 
     #[Route('/add', name: 'absence.ajouter')]
-    public function addAbsence(ManagerRegistry $doctrine, Request $request): Response
+    public function addAbsence(ManagerRegistry $doctrine, Request $request, MailerService $mailer): Response
     {   
         
 
@@ -49,6 +51,12 @@ class AbsenceController extends AbstractController
             $entityManager = $doctrine->getManager();
             $entityManager->persist($absence);
             $entityManager->flush();
+            
+            //envoie du mail si on connecte le mailer
+            $etu = $absence->getEtudiant();
+            $mailMessage = $etu->getPrenom() . " " . $etu->getNom() . " a été absent le " . date_format($absence->getDate(),"Y/m/d H:i:s");
+            $mailer->sendEmail(content: $mailMessage);
+            
             return $this->redirectToRoute('absence.list'); 
         }else{
             return $this->render('absence/add-absence.html.twig', [
@@ -76,15 +84,20 @@ class AbsenceController extends AbstractController
         
     }
 
+
+
+
+
+
     //Permet de récupérer les absences avec un id
     #[Route('/{id<\d+>}', name: 'absence.getById')]
     public function getById(ManagerRegistry $doctrine, $id): Response
     {   
-        $repository = $doctrine->getRepository(Utilisateur::class);
-        $utilisateur = $repository->find($id);
-        if($utilisateur){
+        $repository = $doctrine->getRepository(Etudiant::class);
+        
+        if($this->getUser()){
             $repositoryAbs = new AbsenceRepository($doctrine);
-            $listeAbs = $repositoryAbs->findByIdUtilisateur($id);
+            $listeAbs = $repositoryAbs->findByEtudiant($this->getUser());
             return $this->render('absence/absenceParUser.html.twig', [
                 'absencesUtilisateur' => $listeAbs,
                 'css' => '../css/base2.css'
@@ -97,8 +110,26 @@ class AbsenceController extends AbstractController
         
     }
 
-    #[Route('/justifier', name: 'absence.justifier')]
-    public function justifierAbsence($idAbs, $texteJustif){
-        //TODO
+    #[Route('/justifier/{id<\d+>}', name: 'absence.justifier')]
+    public function justifierAbsence(ManagerRegistry $doctrine, Request $request, Absence $absence = null, $id){
+        $form = $this->createForm(AbsenceType::class, $absence);
+        $form->remove('date');
+        $form->remove('etudiant');
+        $form->remove('valide');
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()){
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($absence);
+            $entityManager->flush();
+            //envoie du mail si on connecte le mailer
+            return $this->redirectToRoute('absence.list'); 
+        }else{
+            return $this->render('absence/add-absence.html.twig', [
+            'form' => $form->createView(),
+            'css' => '../css/base2.css',
+        ]);
+        }
     }
 }

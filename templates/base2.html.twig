@@ -11,6 +11,7 @@
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
     <link rel="stylesheet" href="css/base2.css">
+    <link rel="stylesheet" href="../../css/base2.css">
     <!-- Our Custom CSS -->
     <link rel="stylesheet" href=
         {% if css is defined %}
@@ -31,7 +32,7 @@
         <nav id="sidebar">
             {% if app.user %}
             <div class="sidebar-header">
-                <a href="/utilisateur"> <h3>{{ app.user.numEtudiant }}</h3></a>
+                <a href="/utilisateur"> <h3>{{ app.user.prenom }} {{ app.user.nom }}</h3></a>
             </div>
             {% else %}
                 <div class="sidebar-header">
@@ -39,10 +40,18 @@
             </div>
             {% endif %}
             <ul class="list-unstyled components">
-                <p>{{ app.user.roles[0] }}</p>
-                <li class="active">
-                    <a href="/absence/103">Absences</a>
+                <p>{% if app.user %} 
+                        {% if app.user.roles[0] == 'ROLE_USER' %}
+                            ÉTUDIANT | {{ app.user.classe }} 
+                        {% else %}
+                            PROFESSEUR
+                        {% endif %}
+                    {% endif %}</p>
+                {% if app.user %}
+                <li>
+                    <a href="/absence/{{ app.user.id }}">Absences</a>
                 </li>
+                {% endif %}
                 <li>
                     <a href="/edt">Emploi du temps</a>
                 </li>

@@ -16,14 +16,14 @@ class Absence
     #[ORM\Column(type: 'date')]
     private $date;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private $justification;
 
     #[ORM\Column(type: 'integer', nullable: true)]
     private $valide;
 
     #[ORM\ManyToOne(targetEntity: Utilisateur::class, inversedBy: 'absences')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $idUtilisateur;
 
     #[ORM\ManyToOne(targetEntity: Etudiant::class, inversedBy: 'absences')]
