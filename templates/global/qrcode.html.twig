@@ -11,21 +11,18 @@
         <tr>
         <th scope="col">Dernier pointage</th>
         <th scope="col">Cours</th>
+        <th scope="col">Heure du cours </th>
         </tr>
     </thead>
     <tbody>
+    {% for coursEtu in  coursEtudiants %}
         <tr>
-        <th scope="row">10h13</th>
-        <td>INFO842</td>
+        <th scope="row">{{ coursEtu.heurePointage }}</th>
+        <td> {{coursEtu.cours.nomCours}} </td>
+        <td>{{coursEtu.cours.heureCours }} </td>
         </tr>
-        <tr>
-        <th scope="row">9h17</th>
-        <td>PACI841</td>
-        </tr>
-        <tr>
-        <th scope="row">8h16</th>
-        <td>EASI842</td>
-        </tr>
+    {% endfor %}
+        
     </tbody>
     </table>
 {% endblock %}

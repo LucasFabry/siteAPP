@@ -134,4 +134,18 @@ class AbsenceController extends AbstractController
         ]);
         }
     }
+
+    #[Route("/valider/{id<\d+>}", name: "absence.valider")]
+    public function validerAbsence(ManagerRegistry $doctrine, $id) : Response
+    {
+        $absenceMan = $doctrine->getRepository(Absence::class);
+        $absence = $absenceMan->findOneById($id);
+        $absence->setValide(1);
+
+        $entityManager = $doctrine->getManager();
+        $entityManager->persist($absence);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('absence.getById', array('id' => $id ));
+    }
 }

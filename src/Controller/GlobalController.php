@@ -37,8 +37,11 @@ class GlobalController extends AbstractController
     #[Route('/qrcode', name: 'global.qrcode')]
     public function getQRCode(): Response
     {
+        $listeCoursEtu = $this->getUser()->getCoursEtudiants();
+
         return $this->render('global/qrcode.html.twig', [
             'css' => 'css/qrcode.css',
+            'coursEtudiants' => $listeCoursEtu
         ]);
     }
 
