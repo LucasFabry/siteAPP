@@ -49,9 +49,13 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
+    #[ORM\ManyToMany(targetEntity: Cours::class, mappedBy: 'prof')]
+    private $cours;
+
     public function __construct()
     {
         $this->absences = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -228,5 +232,32 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __toString(): string{
         return $this->getPrenom() . ' ' . $this->getNom();
+    }
+
+    /**
+     * @return Collection<int, Cours>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): self
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours[] = $cour;
+            $cour->addProf($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cours $cour): self
+    {
+        if ($this->cours->removeElement($cour)) {
+            $cour->removeProf($this);
+        }
+
+        return $this;
     }
 }

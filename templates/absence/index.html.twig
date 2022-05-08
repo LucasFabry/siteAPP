@@ -13,7 +13,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ abs.etudiant.prenom }}</h5>
                 <p class="card-text">{{abs.date|date('F jS Y \\a\\t g:ia')}}</p>
-                <a href="#" class="btn btn-primary">Go somewhere</a>
+                <a href="{{ path('absence.getById', {'id': abs.etudiant.id}) }}" class="btn btn-primary">Voir absence élève</a>
             </div>
         </div>
         

@@ -52,10 +52,23 @@ class EtudiantFixtures extends Fixture implements FixtureGroupInterface
             $manager->persist($admin);
        }
 
+       //Création des professeurs
+       for ($i=0; $i < 5; $i++) { 
+            $admin = new Etudiant();
+            $admin->setNumEtudiant("1234567$i");
+            $admin->setPassword($this->hasher->hashPassword($admin,"admin"));
+            $admin->setRoles(['ROLE_PROF']);
+            $admin->setNom($faker->lastname);
+            $admin->setPrenom($faker->firstname);
+            $admin->setMail($faker->email);
+            $admin->setIsVerified(true);
+            $manager->persist($admin);
+        }
+
        //Création des étudiants
        for ($i=0; $i < 50; $i++) { 
             $user = new Etudiant();
-            $user->setNumEtudiant("1234567$i");
+            $user->setNumEtudiant("12345678$i");
             $user->setPassword($this->hasher->hashPassword($user,"admin"));
             $user->setRoles(['ROLE_USER']);
             $user->setNom($faker->lastname);

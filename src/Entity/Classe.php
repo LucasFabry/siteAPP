@@ -27,11 +27,15 @@ class Classe
     #[ORM\OneToMany(mappedBy: 'classe', targetEntity: Etudiant::class)]
     private $etudiants;
 
+    #[ORM\ManyToMany(targetEntity: Cours::class, mappedBy: 'classe')]
+    private $cours;
+
     public function __construct()
     {
         $this->utilisateur = new ArrayCollection();
         $this->professeurs = new ArrayCollection();
         $this->etudiants = new ArrayCollection();
+        $this->cours = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,5 +144,32 @@ class Classe
 
     public function __toString(): string{
         return $this->getNomPromo();
+    }
+
+    /**
+     * @return Collection<int, Cours>
+     */
+    public function getCours(): Collection
+    {
+        return $this->cours;
+    }
+
+    public function addCour(Cours $cour): self
+    {
+        if (!$this->cours->contains($cour)) {
+            $this->cours[] = $cour;
+            $cour->addClasse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCour(Cours $cour): self
+    {
+        if ($this->cours->removeElement($cour)) {
+            $cour->removeClasse($this);
+        }
+
+        return $this;
     }
 }

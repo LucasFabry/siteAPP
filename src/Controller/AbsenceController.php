@@ -12,6 +12,7 @@ use App\Service\MailerService;
 use DateTime;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Persistence\ManagerRegistry;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class AbsenceController extends AbstractController
 {
 
     //Permet d'afficher toutes les absences
-    #[Route('/', name: 'absence.list')]
+    #[Route('/', name: 'absence.list'), IsGranted('ROLE_ADMIN')]
     public function selectAll(ManagerRegistry $manager): Response
     {
         $repository = $manager->getRepository(Absence::class);
@@ -94,10 +95,11 @@ class AbsenceController extends AbstractController
     public function getById(ManagerRegistry $doctrine, $id): Response
     {   
         $repository = $doctrine->getRepository(Etudiant::class);
-        
-        if($this->getUser()){
+        $etu = $repository->findOneById($id);
+        if($etu){
             $repositoryAbs = new AbsenceRepository($doctrine);
-            $listeAbs = $repositoryAbs->findByEtudiant($this->getUser());
+            
+            $listeAbs = $repositoryAbs->findByEtudiant($etu);
             return $this->render('absence/absenceParUser.html.twig', [
                 'absencesUtilisateur' => $listeAbs,
                 'css' => '../css/base2.css'
@@ -124,7 +126,7 @@ class AbsenceController extends AbstractController
             $entityManager->persist($absence);
             $entityManager->flush();
             //envoie du mail si on connecte le mailer
-            return $this->redirectToRoute('absence.list'); 
+            return $this->redirectToRoute('absence.getById', array('id' => $absence->getEtudiant()->getId())); 
         }else{
             return $this->render('absence/add-absence.html.twig', [
             'form' => $form->createView(),

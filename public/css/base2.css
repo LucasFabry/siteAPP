@@ -100,6 +100,14 @@ a[data-toggle="collapse"] {
     transform: translateY(-50%);
 }
 
+#content{
+    margin: auto;
+}
+
+#menuToogle{
+    display: inline;
+}
+
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;
