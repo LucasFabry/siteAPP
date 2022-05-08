@@ -108,6 +108,11 @@ a[data-toggle="collapse"] {
     display: inline;
 }
 
+.row{
+    margin-left: 0px !important;
+    margin-right:0px;
+}
+
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -250px;

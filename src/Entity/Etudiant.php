@@ -49,13 +49,15 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
 
-    #[ORM\ManyToMany(targetEntity: Cours::class, mappedBy: 'prof')]
-    private $cours;
+    #[ORM\OneToMany(mappedBy: 'etudiant', targetEntity: CoursEtudiant::class)]
+    private $coursEtudiants;
+
 
     public function __construct()
     {
         $this->absences = new ArrayCollection();
         $this->cours = new ArrayCollection();
+        $this->coursEtudiants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -235,29 +237,36 @@ class Etudiant implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Cours>
+     * @return Collection<int, CoursEtudiant>
      */
-    public function getCours(): Collection
+    public function getCoursEtudiants(): Collection
     {
-        return $this->cours;
+        return $this->coursEtudiants;
     }
 
-    public function addCour(Cours $cour): self
+    public function addCoursEtudiant(CoursEtudiant $coursEtudiant): self
     {
-        if (!$this->cours->contains($cour)) {
-            $this->cours[] = $cour;
-            $cour->addProf($this);
+        if (!$this->coursEtudiants->contains($coursEtudiant)) {
+            $this->coursEtudiants[] = $coursEtudiant;
+            $coursEtudiant->setEtudiant($this);
         }
 
         return $this;
     }
 
-    public function removeCour(Cours $cour): self
+    public function removeCoursEtudiant(CoursEtudiant $coursEtudiant): self
     {
-        if ($this->cours->removeElement($cour)) {
-            $cour->removeProf($this);
+        if ($this->coursEtudiants->removeElement($coursEtudiant)) {
+            // set the owning side to null (unless already changed)
+            if ($coursEtudiant->getEtudiant() === $this) {
+                $coursEtudiant->setEtudiant(null);
+            }
         }
 
         return $this;
     }
+
+    
+
+    
 }

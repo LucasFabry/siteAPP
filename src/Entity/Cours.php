@@ -24,13 +24,16 @@ class Cours
     #[ORM\ManyToMany(targetEntity: Classe::class, inversedBy: 'cours')]
     private $classe;
 
-    #[ORM\ManyToMany(targetEntity: Etudiant::class, inversedBy: 'cours')]
-    private $prof;
+    #[ORM\OneToMany(mappedBy: 'cours', targetEntity: CoursEtudiant::class)]
+    private $coursEtudiants;
+
 
     public function __construct()
     {
         $this->classe = new ArrayCollection();
         $this->prof = new ArrayCollection();
+        $this->etudiant = new ArrayCollection();
+        $this->coursEtudiants = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,26 +90,36 @@ class Cours
     }
 
     /**
-     * @return Collection<int, Etudiant>
+     * @return Collection<int, CoursEtudiant>
      */
-    public function getProf(): Collection
+    public function getCoursEtudiants(): Collection
     {
-        return $this->prof;
+        return $this->coursEtudiants;
     }
 
-    public function addProf(Etudiant $prof): self
+    public function addCoursEtudiant(CoursEtudiant $coursEtudiant): self
     {
-        if (!$this->prof->contains($prof)) {
-            $this->prof[] = $prof;
+        if (!$this->coursEtudiants->contains($coursEtudiant)) {
+            $this->coursEtudiants[] = $coursEtudiant;
+            $coursEtudiant->setCours($this);
         }
 
         return $this;
     }
 
-    public function removeProf(Etudiant $prof): self
+    public function removeCoursEtudiant(CoursEtudiant $coursEtudiant): self
     {
-        $this->prof->removeElement($prof);
+        if ($this->coursEtudiants->removeElement($coursEtudiant)) {
+            // set the owning side to null (unless already changed)
+            if ($coursEtudiant->getCours() === $this) {
+                $coursEtudiant->setCours(null);
+            }
+        }
 
         return $this;
     }
+
+  
+
+  
 }

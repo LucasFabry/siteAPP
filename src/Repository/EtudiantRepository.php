@@ -101,4 +101,13 @@ class EtudiantRepository extends ServiceEntityRepository implements PasswordUpgr
                     ->getResult()
         ;
     }
+
+    public function getParEtudiants($role){
+        return $this->createQueryBuilder('e')
+                    ->andWhere('e.roles LIKE :role')
+                    ->setParameter('role', '%ROLE_USER%')
+                    ->getQuery()
+                    ->getResult()
+        ;
+    }
 }
